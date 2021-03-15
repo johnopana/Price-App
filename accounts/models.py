@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 
 # Create your models here.
 
@@ -38,7 +39,7 @@ def __str__(self):
         return self.name 
    
 
-class Order(models.Model):
+class Order(models .Model):
     STATUS = (
         ('pending', 'pending'),
         ('Out for Delivery', 'Out for Delivery'),

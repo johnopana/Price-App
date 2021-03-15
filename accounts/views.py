@@ -1,6 +1,11 @@
+import os
+# from django.conf import settings
+# from django.templatetags.static import static
+from django.db.models import Count
 from django.shortcuts import render
 from django .http import HttpResponse
 from . models import *
+
 
 
 
@@ -8,11 +13,10 @@ def home(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
     total_customers = customers.count()
+
     total_orders = orders.count()
-
-    delivered = Orders.filter(status='Delivered')
-    # similar_actions = Action.objects.filter(created__gte=last_minute, user_id=user.id, verb=verb)
-
+    # delivered = orders.filter(status='Delivered').count() 
+    delivered = orders.filter(delivered = delivered).count()
     pending = orders.filter(status='Pending').count()
 
     context = {'customers':customers , 'orders':orders,
@@ -22,10 +26,12 @@ def home(request):
 
 def products(request):
     products = Product.objects.all()
-    return render (request ,'accounts/products.html', {'products': products}) 
-
-  
-
+    return render (request ,'accounts/products.html', {'products': products})
 
 def customer(request):
-    return render (request , 'accounts/customer.html')      
+    customer = Customer.objects.get(id=pk_test)
+
+    orders = customer.order_set. all()
+    order_count = orders.count()
+    context = {'customer':customer,'orders':orders,'order_count':order_count}
+    return render (request , 'accounts/customer.html',context)      
